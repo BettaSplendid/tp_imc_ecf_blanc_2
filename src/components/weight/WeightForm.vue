@@ -27,8 +27,6 @@
     <h3>Entrez vos informations ci-dessous:</h3>
 
     <section>
-      <h3>binding value</h3>
-
       <input type="radio" id="yes" value="Homme" v-model="selected_gender" />
       <label for="yes">Homme</label>
       <br />
@@ -69,7 +67,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { onUpdated } from "@vue/runtime-core";
 
 const form_e = { heightt: null, weightt: null };
 const selected_gender = ref();
@@ -77,26 +74,22 @@ const display_result_height = ref();
 const display_result_weight = ref();
 const display_result_imc = ref();
 const display_result_ideal = ref();
-const picked = ref();
-
 function OnCalculate() {
-  console.log("Start func Calculate");
-  // console.log(form_e.weightt);
-
+  // C'est une grosse fonction, qui va calculer l'imc
+  // Verification supplémentaire de si on à un string, le type le plus probable
   if (typeof form_e.heightt === "string" || form_e.weightt instanceof String) {
     alert("I want numbers only");
     return;
   }
 
+  //Idem. Separé pour plus de lisibilité
   if (form_e.heightt === null || form_e.weightt === null) {
     alert("Merci de rajouter les informations");
     return;
   }
 
-  console.log(selected_gender);
-  console.log(selected_gender.value);
+  // Un placeholder qui nous sert juste en dessous pour ne pas repeter le calcul du poids ideal
   let gender_value = 0;
-
   if (selected_gender.value == "Homme") {
     gender_value = 4;
   } else if (selected_gender.value == "Femme") {
@@ -106,23 +99,21 @@ function OnCalculate() {
     return;
   }
 
+  // On rends tout les chiffres en positif avec abs, et arrondi en entier avec floor
   form_e.heightt = Math.floor(Math.abs(form_e.heightt));
   form_e.weightt = Math.floor(Math.abs(form_e.weightt));
 
-  let height_meter = form_e.heightt / 100;
+  // Les calculs de l'IMC
   let height_squared = form_e.heightt * form_e.heightt;
   let weight_kg = form_e.weightt;
-  // height_meter
-  console.log({ height_meter });
-  console.log({ height_squared });
-  console.log({ weight_kg });
   let imc_output = (weight_kg / height_squared) * 10000;
+  // Pour la quantité de chiffres après virgules
   imc_output = imc_output.toPrecision(3);
-  console.log({ imc_output });
 
   let ideal_weight =
     form_e.heightt - 100 - (form_e.heightt - 150) / gender_value;
 
+  // Assignation des valeurs pour affichage reactif
   display_result_height.value = form_e.heightt;
   display_result_weight.value = weight_kg;
   display_result_imc.value = imc_output;

@@ -14,7 +14,6 @@
 
 <script setup>
 import WeightForm from "../components/weight/WeightForm.vue";
-
 </script>
 
 <style>
