@@ -67,6 +67,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useImcStore } from "../../stores/imc_store";
 
 const form_e = { heightt: null, weightt: null };
 const selected_gender = ref();
@@ -74,6 +75,10 @@ const display_result_height = ref();
 const display_result_weight = ref();
 const display_result_imc = ref();
 const display_result_ideal = ref();
+
+const the_store = useImcStore();
+
+
 function OnCalculate() {
   // C'est une grosse fonction, qui va calculer l'imc
   // Verification supplémentaire de si on à un string, le type le plus probable
@@ -99,6 +104,8 @@ function OnCalculate() {
     return;
   }
 
+  // Verifications finies, on à toutes nos données
+
   // On rends tout les chiffres en positif avec abs, et arrondi en entier avec floor
   form_e.heightt = Math.floor(Math.abs(form_e.heightt));
   form_e.weightt = Math.floor(Math.abs(form_e.weightt));
@@ -118,8 +125,11 @@ function OnCalculate() {
   display_result_weight.value = weight_kg;
   display_result_imc.value = imc_output;
   display_result_ideal.value = ideal_weight;
+
+  the_store.imc = imc_output;
 }
 </script>
+
 <style>
 table {
   table-layout: fixed;
