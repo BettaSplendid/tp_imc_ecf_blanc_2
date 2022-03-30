@@ -42,6 +42,7 @@
       id="heightheight"
       min="0"
       step="1"
+      required
     />
     <label for="exampleInputEmail1" class="form-label"
       >Poids en KG entier :
@@ -53,6 +54,7 @@
       id="weightweight"
       min="0"
       step="1"
+      required 
     />
     <!-- <button>Calculer</button> -->
     <button @click="OnCalculate" type="button">Calculer</button>
